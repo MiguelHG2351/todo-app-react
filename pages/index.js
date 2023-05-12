@@ -1,17 +1,21 @@
 import { useRef } from "react";
 import CardItem from "../components/CardItem";
-import { useSelector } from "react-redux";
-import { selectCount } from "../components/todoReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCount, addTodo } from "../components/todoReducer";
 
 export default function Home() {
   const formRef = useRef(null);
   const todoList = useSelector(selectCount)
+  const dispatch = useDispatch()
   console.log(todoList)
 
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(formRef.current);
     console.log(formData.get("task-name"));
+    dispatch(addTodo({
+      title: formData.get('task-name')
+    }))
   };
 
   return (
