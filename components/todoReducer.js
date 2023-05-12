@@ -18,9 +18,27 @@ export const counterSlice = createSlice({
     },
     checkTodo: (state, action) => {
       state.map(data => {
-        console.log('Here')
         if(action.payload.id === data.id) {
           return data.isPending = !data.isPending
+        }
+        return data
+      })
+    },
+    removeTodo: (state, action) => {
+      console.log(`Id: ${action.payload.id}`)
+      console.log(typeof action.payload.id)
+      state.filter(data => {
+        console.log(data.id, action.payload.id)
+        if(data.id !== action.payload.id) {
+          return data
+        }
+        return null
+      })
+    },
+    editTodo: (state, action) => {
+      state.map(data => {
+        if(action.payload.id === data.id) {
+          return data.title = action.payload.title
         }
         return data
       })
@@ -28,7 +46,7 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { addTodo, checkTodo } = counterSlice.actions
+export const { addTodo, checkTodo, removeTodo, editTodo } = counterSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

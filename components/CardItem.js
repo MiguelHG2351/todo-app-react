@@ -1,19 +1,43 @@
 import { useDispatch } from "react-redux";
-import { checkTodo } from "./todoReducer";
-import React from "react";
+import { checkTodo, removeTodo, editTodo } from "./todoReducer";
+import React, { useState } from "react";
 
 function CardItem({ titleCard, isPending, idCard }) {
   const dispatch = useDispatch()
+  const [visible, setVisible] = useState(false)
   const check = () => {
     dispatch(checkTodo({
       id: idCard
     }))
   }
+
+  const onEditTodo = () => {
+    setVisible(!visible)
+  }
+  
+  const onRemoveTodo = () => {
+    console.log('here')
+    dispatch(removeTodo({
+      id: idCard
+    }))
+  }
+
+  const onEditSubmit = (e) => {
+    e.preventDefault()
+    console.log(e.currentTarget)
+    const formData = new FormData(e.currentTarget)
+    dispatch(editTodo({
+      id: idCard,
+      title: formData.get('new-name')
+    }))
+    onEditTodo()
+  }
+
   console.log('componentWillUpdate')
   console.log(isPending)
   
   return (
-    <li className="shadow-custom-white py-4 px-2 flex justify-between">
+    <li className="relative shadow-custom-white py-4 px-2 flex justify-between">
       <div className="flex gap-x-2">
         <label>
           <input onClick={check} type="radio" />
@@ -25,7 +49,7 @@ function CardItem({ titleCard, isPending, idCard }) {
          }
       </div>
       <div className="options">
-        <button>
+        <button onClick={onRemoveTodo}>
           <span className="inline-block vertical-middle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +107,7 @@ function CardItem({ titleCard, isPending, idCard }) {
             </svg>
           </span>
         </button>
-        <button>
+        <button onClick={onEditTodo}>
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -114,6 +138,16 @@ function CardItem({ titleCard, isPending, idCard }) {
           </span>
         </button>
       </div>
+      {
+        visible && (
+        <div className="absolute top-0 left-0 right-0 px-3 bottom-0 bg-white flex items-center justify-center">
+          <form onSubmit={onEditSubmit} className="w-full">
+            <input name="new-name" className="bg-slate-300 w-full p-2 rounded-sm" type="text" placeholder="add new title" />
+          </form>
+          <button onClick={onEditTodo}>Close</button>
+        </div>
+        )
+      }
     </li>
   );
 }
