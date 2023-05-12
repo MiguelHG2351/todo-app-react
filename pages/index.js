@@ -13,8 +13,12 @@ export default function Home() {
     e.preventDefault();
     const formData = new FormData(formRef.current);
     console.log(formData.get("task-name"));
+    const length = todoList.length
+
     dispatch(addTodo({
-      title: formData.get('task-name')
+      title: formData.get('task-name'),
+      isPeding: false,
+      id: length + 1
     }))
   };
 
@@ -53,7 +57,7 @@ export default function Home() {
       </form>
       <ul className="list">
         { todoList.map((data, index) => (
-          <CardItem key={index} titleCard={data.title} />
+          <CardItem idCard={data.id} isPending={data.isPending} key={index} titleCard={data.title} />
         )) }
       </ul>
     </main>

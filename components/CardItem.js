@@ -1,11 +1,16 @@
+import { useDispatch } from "react-redux";
+import { checkTodo } from "./todoReducer";
 import React from "react";
 
-function CardItem({ titleCard }) {
+function CardItem({ titleCard, isPending, idCard }) {
+  const dispatch = useDispatch()
   const check = () => {
-    // TODO: Update state
-    // line-through
-
+    dispatch(checkTodo({
+      id: idCard
+    }))
   }
+  console.log('componentWillUpdate')
+  console.log(isPending)
   
   return (
     <li className="shadow-custom-white py-4 px-2 flex justify-between">
@@ -13,7 +18,11 @@ function CardItem({ titleCard }) {
         <label>
           <input onClick={check} type="radio" />
         </label>
-        <span className="text-custom-dark-blue">{ titleCard}</span>
+        {isPending ?
+          <span className="text-custom-dark-blue line-through">{ titleCard}</span>
+         :
+          <span className="text-custom-dark-blue">{ titleCard}</span>
+         }
       </div>
       <div className="options">
         <button>
