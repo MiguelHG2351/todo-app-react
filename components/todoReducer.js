@@ -27,12 +27,11 @@ export const counterSlice = createSlice({
     removeTodo: (state, action) => {
       console.log(`Id: ${action.payload.id}`)
       console.log(typeof action.payload.id)
-      state.filter(data => {
+      return state.filter(data => {
         console.log(data.id, action.payload.id)
         if(data.id !== action.payload.id) {
           return data
         }
-        return null
       })
     },
     editTodo: (state, action) => {
